@@ -1,17 +1,17 @@
 package org.mobilelite.android;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import org.mobilelite.MobileLiteActivity;
-
-import com.google.gson.Gson;
+import java.util.Map.Entry;
 
 import android.util.Log;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 public class PageEventDispatcher {
 	
@@ -37,11 +37,20 @@ public class PageEventDispatcher {
 	
 	public void onPageReady() {
 		//webView.loadUrl("javascript:liteEngine.initBeanProxy(" + gson.toJson(beans.keySet()) + ")");
-		Log.d("onPageReady:", gson.toJson(beans.keySet()));
+		Log.d("onPageReady:", gson.toJson(getBeanDefinitions()));
    		//Toast.makeText(webView.getContext(), "test", 200).show();
-		webView.loadUrl("javascript:mobileLite.initBeans(" + gson.toJson(beans.keySet()) + ")");
+		webView.loadUrl("javascript:mobileLite.initBeans(" + gson.toJson(getBeanDefinitions()) + ")");
 	}
-
+	
+	private List<BeanDefinition> getBeanDefinitions() {
+		List<BeanDefinition> defs = new ArrayList<BeanDefinition>();
+		for (Entry<String, Object> entry : beans.entrySet()) {
+			BeanDefinition def = new BeanDefinition(entry.getKey(), entry.getValue());
+			defs.add(def);
+		}
+		return defs;
+	}
+	
 	public void loadUrl(String url) {
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.addJavascriptInterface(this, "_mobileLiteProxy_");
