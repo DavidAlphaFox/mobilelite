@@ -25,13 +25,15 @@ MobileLiteEngine.prototype = {
 					mobileLite.callback[callback.guid] = callback;
 				}
 				
-				this.engine.invokeBeanAction(this.name, obj.methodNames[methodName], args, callback.toString());
+				this.engine.invokeBeanAction(this.name, obj.methodNames[methodName], args, callback);
 			}
 		}
 	},
 	invokeBeanAction: function(bean, methodName, args, callback) {
 		//alert( "bean:" + bean + ", method:" + methodName + ", args:" + args );
-		_mobileLiteProxy_.invokeBeanAction(bean, methodName, args, callback);
+		if(callback)
+			callback = callback.toString();
+		_mobileLiteProxy_.invokeBeanAction(bean, methodName, JSON.stringify(args), callback);
 		//alert( "bean:" + bean + ", method:" + methodName + ", args:" + args + ", callback:" + callback );
 	}
 };

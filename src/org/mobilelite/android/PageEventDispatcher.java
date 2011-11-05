@@ -29,7 +29,7 @@ public class PageEventDispatcher {
 	public void invokeBeanAction(String beanName, String method, String param, String callback) {
 		Log.d("BeanAction", beanName);
 		Log.d("param", param);
-		Log.d("callback", callback);
+		Log.d("callback", callback == null? "null": callback);
 		//webView.loadUrl("javascript:liteEngine.dispatchEvent(" +event + "," + serializeData(data) + ")");
 	}
 
