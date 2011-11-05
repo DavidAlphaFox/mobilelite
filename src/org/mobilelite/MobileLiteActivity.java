@@ -25,5 +25,6 @@ public class MobileLiteActivity extends Activity {
         	}
         });
         webPage.loadUrl("file:///android_asset/demo.html");
+        //webPage.loadUrl("file:///android_asset/a.html");
     }
 }
