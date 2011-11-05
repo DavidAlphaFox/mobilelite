@@ -1,6 +1,5 @@
 (function(){
 
-alert("1");
 var MobileLiteEngine = function(mobileLite) {
 	};
 
@@ -37,8 +36,7 @@ else window.mobileLite = mobileLite;
 })();
 
 $(document).ready(function() {
-alert("2");
-	_mobileLiteProxy_.onPageReady();
-alert("3");
+	//_mobileLiteProxy_.onPageReady();
+	mobileLite.initBeans(["bean"]);
 });
 
