@@ -29,7 +29,7 @@ public class MobileLiteActivity extends Activity {
     @Service
     private class BusinessService {
     	@ServiceMethod
-    	void show(String text) {
+    	public void show(String text) {
     		Toast.makeText(MobileLiteActivity.this, text, 200).show();
     	}
     }

@@ -1,5 +1,8 @@
 package org.mobilelite.android;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +17,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 public class PageEventDispatcher {
 	
@@ -28,11 +32,37 @@ public class PageEventDispatcher {
 		this.webView = webView;
 	}
 	
-	public void invokeBeanAction(String beanName, String method, String param, String callback) {
+	public void invokeBeanAction(String beanName, String methodName, String params, String callback) {
 		Log.d("BeanAction", beanName);
-		Log.d("param", param);
+		Log.d("param", params);
 		Log.d("callback", callback == null? "null" : callback);
 		//webView.loadUrl("javascript:liteEngine.dispatchEvent(" +event + "," + serializeData(data) + ")");
+		
+		Object bean = beans.get(beanName);
+		try {
+			Method beanMethod = bean.getClass().getDeclaredMethod(methodName, String.class);
+			
+			//Type collectionType = new TypeToken<Collection<String>>(){}.getType();
+			Object result = beanMethod.invoke(bean, gson.fromJson(params,  String[].class));
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void definePageBean(String name, Object bean) {
