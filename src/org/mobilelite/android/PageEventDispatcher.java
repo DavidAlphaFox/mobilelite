@@ -31,7 +31,7 @@ public class PageEventDispatcher {
 	public void invokeBeanAction(String beanName, String method, String param, String callback) {
 		Log.d("BeanAction", beanName);
 		Log.d("param", param);
-		Log.d("callback", callback == null? "null": callback);
+		Log.d("callback", callback == null? "null" : callback);
 		//webView.loadUrl("javascript:liteEngine.dispatchEvent(" +event + "," + serializeData(data) + ")");
 	}
 
@@ -41,12 +41,12 @@ public class PageEventDispatcher {
 	
 	public void onPageReady() {
 		//webView.loadUrl("javascript:liteEngine.initBeanProxy(" + gson.toJson(beans.keySet()) + ")");
-		Log.d("onPageReady:", gson.toJson(getBeanDefinitions()));
+		Log.d("onPageReady:", gson.toJson(getServiceBeanDefinitions()));
    		//Toast.makeText(webView.getContext(), "test", 200).show();
-		webView.loadUrl("javascript:mobileLite.initBeans(" + gson.toJson(getBeanDefinitions()) + ")");
+		webView.loadUrl("javascript:mobileLite.initBeans(" + gson.toJson(getServiceBeanDefinitions()) + ")");
 	}
 	
-	private List<ServiceBeanDefinition> getBeanDefinitions() {
+	private List<ServiceBeanDefinition> getServiceBeanDefinitions() {
 		List<ServiceBeanDefinition> defs = new ArrayList<ServiceBeanDefinition>();
 		for (Entry<String, Object> entry : beans.entrySet()) {
 			if (entry.getValue().getClass().isAnnotationPresent(Service.class)) {
