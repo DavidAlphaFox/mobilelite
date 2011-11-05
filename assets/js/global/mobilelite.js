@@ -7,17 +7,18 @@ MobileLiteEngine.prototype = {
 	constructor: MobileLiteEngine,
 	createLiteProxy: function (obj) {
 		window[obj] = {
+			name: obj,
 			engine: this,
-			__noSuchMethod__: function(id, args) {
-				this[id] = function(args) {
-					this.engine.invokeBeanAction(id, args);
+			__noSuchMethod__: function(methodName, args) {
+				this[methodName] = function(args) {
+					this.engine.invokeBeanAction(this.name, methodName, args);
 				}
-				this[id](args);
+				this[methodName](args);
 			}
 		};
 	},
-	invokeBeanAction: function(id, args) {
-		alert( "id:" + id + ", args:" + args );
+	invokeBeanAction: function(bean, methodName, args) {
+		alert( "bean:" + bean + ", method:" + methodName + ", args:" + args );
 	}
 };
 
