@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.mobilelite.annotation.Service;
+
 import android.util.Log;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -33,7 +35,6 @@ public class PageEventDispatcher {
 		//webView.loadUrl("javascript:liteEngine.dispatchEvent(" +event + "," + serializeData(data) + ")");
 	}
 
-
 	public void definePageBean(String name, Object bean) {
 		beans.put(name, bean);
 	}
@@ -45,11 +46,12 @@ public class PageEventDispatcher {
 		webView.loadUrl("javascript:mobileLite.initBeans(" + gson.toJson(getBeanDefinitions()) + ")");
 	}
 	
-	private List<BeanDefinition> getBeanDefinitions() {
-		List<BeanDefinition> defs = new ArrayList<BeanDefinition>();
+	private List<ServiceBeanDefinition> getBeanDefinitions() {
+		List<ServiceBeanDefinition> defs = new ArrayList<ServiceBeanDefinition>();
 		for (Entry<String, Object> entry : beans.entrySet()) {
-			BeanDefinition def = new BeanDefinition(entry.getKey(), entry.getValue());
-			defs.add(def);
+			if (entry.getValue().getClass().isAnnotationPresent(Service.class)) {
+				defs.add(ServiceBeanDefinition.newInstance(entry.getKey(), entry.getValue()));
+			}
 		}
 		return defs;
 	}

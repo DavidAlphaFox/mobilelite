@@ -1,6 +1,8 @@
 package org.mobilelite;
 
 import org.mobilelite.android.WebPage;
+import org.mobilelite.annotation.Service;
+import org.mobilelite.annotation.ServiceMethod;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,12 +21,17 @@ public class MobileLiteActivity extends Activity {
         
         webView = (WebView) findViewById(R.id.webView);
         WebPage webPage = new WebPage(webView);
-        webPage.definePageBean("bean", new Object(){
-        	void show(String text) {
-        		Toast.makeText(MobileLiteActivity.this, text, 200).show();
-        	}
-        });
+        webPage.definePageBean("bean", new BusinessService());
         webPage.loadUrl("file:///android_asset/demo.html");
         //webPage.loadUrl("file:///android_asset/a.html");
     }
+    
+    @Service
+    private class BusinessService {
+    	@ServiceMethod
+    	void show(String text) {
+    		Toast.makeText(MobileLiteActivity.this, text, 200).show();
+    	}
+    }
+    
 }
