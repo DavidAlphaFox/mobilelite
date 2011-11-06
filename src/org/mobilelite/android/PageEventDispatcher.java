@@ -38,10 +38,11 @@ public class PageEventDispatcher {
 		try {
 			Object result = bean.invoke(methodName, params);
 			if (callback != null) {
+				Log.d("invokeBeanAction", "before gson to json: " + result);
 				if (result != null) {
 					result = gson.toJson(result);
 				}
-				Log.d("invokeBeanAction", "result: " + result);
+				Log.d("invokeBeanAction", "after gson to json: " + result);
 				webView.loadUrl("javascript:mobileLite.doCallback(" + result + ", " + callback + ")");
 			}
 		} catch (SecurityException e) {
