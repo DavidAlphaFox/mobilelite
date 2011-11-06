@@ -1,13 +1,9 @@
 package org.mobilelite.android;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.mobilelite.annotation.Service;
 
@@ -24,7 +20,7 @@ public class PageEventDispatcher {
 	/** The web view which need to communicate with js. */
 	protected WebView webView;
 	
-	protected Map<String, Object> beans = new HashMap<String, Object>();
+	protected Map<String, ServiceBean> beans = new HashMap<String, ServiceBean>();
 	
 	protected Gson gson = new Gson();
 	
@@ -38,12 +34,9 @@ public class PageEventDispatcher {
 		Log.d("callback", callback == null? "null" : callback);
 		//webView.loadUrl("javascript:liteEngine.dispatchEvent(" +event + "," + serializeData(data) + ")");
 		
-		Object bean = beans.get(beanName);
+		ServiceBean bean = beans.get(beanName);
 		try {
-			Method beanMethod = bean.getClass().getDeclaredMethod(methodName, String.class);
-			
-			//Type collectionType = new TypeToken<Collection<String>>(){}.getType();
-			Object result = beanMethod.invoke(bean, gson.fromJson(params,  String[].class));
+			Object result = bean.invoke(methodName, params);
 			if(callback != null) {
 				if(result != null) {
 					result = gson.toJson(result);
@@ -51,28 +44,15 @@ public class PageEventDispatcher {
 				webView.loadUrl("javascript:mobileLite.doCallback(" + result + "," + callback + ")");
 			}
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (JsonSyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
 	public void definePageBean(String name, Object bean) {
-		beans.put(name, bean);
+		if(bean.getClass().isAnnotationPresent(Service.class)) {
+			beans.put(name, new ServiceBean(name, bean));
+		}
 	}
 	
 	public void onPageReady() {
@@ -84,10 +64,8 @@ public class PageEventDispatcher {
 	
 	private List<ServiceBeanDefinition> getServiceBeanDefinitions() {
 		List<ServiceBeanDefinition> defs = new ArrayList<ServiceBeanDefinition>();
-		for (Entry<String, Object> entry : beans.entrySet()) {
-			if (entry.getValue().getClass().isAnnotationPresent(Service.class)) {
-				defs.add(ServiceBeanDefinition.newInstance(entry.getKey(), entry.getValue()));
-			}
+		for (ServiceBean serviceBean : beans.values()) {
+			defs.add(serviceBean.getServiceBeanDefinition());
 		}
 		return defs;
 	}

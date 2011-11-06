@@ -35,7 +35,10 @@ public class ServiceBeanDefinition {
 		for (int i = 0; i < methods.length; i++) {
 			if (methods[i].isAnnotationPresent(ServiceMethod.class)) {
 				// is service method, need to be exposed to definition
-				methodNames.add(methods[i].getName());
+				String methodName = methods[i].getName();
+				if(!methodNames.contains(methodName)) {
+					methodNames.add(methods[i].getName());
+				}
 			}
 		}
 	}
