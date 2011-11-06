@@ -49,9 +49,7 @@ var mobileLite = {
 if (typeof exports !== 'undefined') exports.mobileLite = mobileLite;
 else window.mobileLite = mobileLite;
 
+_mobileLiteProxy_.onPageReady();
+//mobileLite.initBeans([{"bean":{}, "methodNames":["queryContact", "show"], "name":"bean"}]);
 }) ();
 
-$(document).ready(function() {
-	_mobileLiteProxy_.onPageReady();
-	//mobileLite.initBeans([{"bean":{}, "methodNames":["queryContact", "show"], "name":"bean"}]);
-});
