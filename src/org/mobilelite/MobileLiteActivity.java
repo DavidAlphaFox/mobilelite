@@ -6,6 +6,7 @@ import org.mobilelite.annotation.ServiceMethod;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
 import android.widget.Toast;
 
@@ -28,10 +29,21 @@ public class MobileLiteActivity extends Activity {
     
     @Service
     private class BusinessService {
-    	@ServiceMethod
+    	
+		@SuppressWarnings("unused")
+		@ServiceMethod
     	public void show(String text) {
     		Toast.makeText(MobileLiteActivity.this, text, 200).show();
     	}
+    	
+		@SuppressWarnings("unused")
+		@ServiceMethod
+    	public Contact queryContact(Contact query) {
+			Toast.makeText(MobileLiteActivity.this, "query by id[" + query.getId() + "], [" + query.getName() + "]", 200).show();
+    		Log.d("queryContact", "query by id[" + query.getId() + "], [" + query.getName() + "]");
+    		return new Contact("1", "Jim");
+    	}
+    	
     }
     
 }

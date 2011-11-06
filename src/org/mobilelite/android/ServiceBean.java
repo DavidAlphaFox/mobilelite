@@ -35,22 +35,20 @@ public class ServiceBean {
 		JsonArray jaParams = null;
 		if(je.isJsonArray()) {
 			jaParams = je.getAsJsonArray();
-		}
-		else if(je.isJsonObject() || je.isJsonPrimitive()) {
+		} else if(je.isJsonObject() || je.isJsonPrimitive()) {
 			jaParams = new JsonArray();
 			jaParams.add(je);
-		}
-		else if(je.isJsonNull()) {
+		} else if(je.isJsonNull()) {
 			jaParams = new JsonArray();
 		}
 
-		Method[] methods = getBeanMethods(name, jaParams.size());
-		for ( Method method : methods ) {
+		Method[] methods = getBeanMethods(methodName, jaParams.size());
+		for (Method method : methods) {
 			@SuppressWarnings("rawtypes")
 			Class[] paramClasses = method.getParameterTypes();
 			List<Object> params = new ArrayList<Object>();
 			try {
-				for(int i=0; i<paramClasses.length; i++) {
+				for (int i = 0; i < paramClasses.length; i++) {
 					params.add(gson.fromJson(jaParams.get(i), paramClasses[i]));
 				}
 				
@@ -69,8 +67,9 @@ public class ServiceBean {
 	private Method[] getBeanMethods(String methodName, int paramNum) {
 		List<Method> methods = new ArrayList<Method>();
 		Method[] beanMethods = bean.getClass().getDeclaredMethods();
-		for(Method method : beanMethods) {
-			if(method.getParameterTypes().length == paramNum)
+		for (Method method : beanMethods) {
+			if (method.getName().equals(methodName) 
+					&& method.getParameterTypes().length == paramNum)
 				methods.add(method);
 		}
 		return methods.toArray(new Method[]{});

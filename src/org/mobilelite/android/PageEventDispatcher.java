@@ -37,11 +37,12 @@ public class PageEventDispatcher {
 		ServiceBean bean = beans.get(beanName);
 		try {
 			Object result = bean.invoke(methodName, params);
-			if(callback != null) {
-				if(result != null) {
+			if (callback != null) {
+				if (result != null) {
 					result = gson.toJson(result);
 				}
-				webView.loadUrl("javascript:mobileLite.doCallback(" + result + "," + callback + ")");
+				Log.d("invokeBeanAction", "result: " + result);
+				webView.loadUrl("javascript:mobileLite.doCallback(" + result + ", " + callback + ")");
 			}
 		} catch (SecurityException e) {
 		} catch (JsonSyntaxException e) {
@@ -50,7 +51,7 @@ public class PageEventDispatcher {
 	}
 
 	public void definePageBean(String name, Object bean) {
-		if(bean.getClass().isAnnotationPresent(Service.class)) {
+		if (bean.getClass().isAnnotationPresent(Service.class)) {
 			beans.put(name, new ServiceBean(name, bean));
 		}
 	}
@@ -87,6 +88,5 @@ public class PageEventDispatcher {
 		}
 		
 	}
-
 	
 }
