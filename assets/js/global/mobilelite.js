@@ -5,7 +5,6 @@ var MobileLiteEngine = function(mobileLite) {
 
 MobileLiteEngine.prototype = {
 	constructor: MobileLiteEngine,
-	guid: 1, 
 	createLiteProxy: function(obj) {
 		window[obj.name] = {
 			name: obj.name,
@@ -18,11 +17,6 @@ MobileLiteEngine.prototype = {
 				if(args.length >0 && args[args.length - 1] instanceof Function) {
 					callback = args[args.length - 1];
 					args = args.slice(0, args.length - 1);
-				}
-				
-				if(callback && !(callback.guid)) {
-					callback.guid = this.engine.guid++;
-					mobileLite.callback[callback.guid] = callback;
 				}
 				
 				this.engine.invokeBeanAction(this.name, obj.methodNames[methodName], args, callback);
@@ -45,7 +39,10 @@ var mobileLite = {
 			this.engine.createLiteProxy(beans[bean]);
 		}
 	},
-	callback: {}
+	doCallback: function(result, callback) {
+		var cbFun = eval(callback);
+		cbFun(result);
+	}
 };
 
 if (typeof exports !== 'undefined') exports.mobileLite = mobileLite;

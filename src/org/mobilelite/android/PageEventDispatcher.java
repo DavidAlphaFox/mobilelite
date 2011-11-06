@@ -44,6 +44,12 @@ public class PageEventDispatcher {
 			
 			//Type collectionType = new TypeToken<Collection<String>>(){}.getType();
 			Object result = beanMethod.invoke(bean, gson.fromJson(params,  String[].class));
+			if(callback != null) {
+				if(result != null) {
+					result = gson.toJson(result);
+				}
+				webView.loadUrl("javascript:mobileLite.doCallback(" + result + "," + callback + ")");
+			}
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
