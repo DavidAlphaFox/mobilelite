@@ -41,7 +41,9 @@ public class MobileLiteActivity extends Activity {
     	public Contact queryContact(Contact query) {
 			Toast.makeText(MobileLiteActivity.this, "query by id[" + query.getId() + "], [" + query.getName() + "]", 200).show();
     		Log.d("queryContact", "query by id[" + query.getId() + "], [" + query.getName() + "]");
-    		return new Contact("1", "Jim");
+    		Contact c = new Contact("1", "Jim");
+    		c.setDescription("Hello <font color=\"red\">" + c.getName() + "<font>!");
+    		return c;
     	}
     	
     }
