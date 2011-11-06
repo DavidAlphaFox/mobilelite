@@ -10,8 +10,8 @@ MobileLiteEngine.prototype = {
 			name: obj.name,
 			engine: this
 		};
-		for (methodName in obj.methodNames) {
-			window[obj.name][obj.methodNames[methodName]] = function() {
+		for each (methodName in obj.methodNames) {
+			window[obj.name][methodName] = function() {
 				var args = Array.prototype.slice.call(arguments);
 				var callback = null;
 				if(args.length >0 && args[args.length - 1] instanceof Function) {
@@ -19,16 +19,17 @@ MobileLiteEngine.prototype = {
 					args = args.slice(0, args.length - 1);
 				}
 				
-				this.engine.invokeBeanAction(this.name, obj.methodNames[methodName], args, callback);
+				this.engine.invokeBeanAction(this.name, arguments.callee.methodName, args, callback);
 			}
+			window[obj.name][methodName].methodName = methodName;
 		}
 	},
 	invokeBeanAction: function(bean, methodName, args, callback) {
 		//alert( "bean:" + bean + ", method:" + methodName + ", args:" + args );
 		if(callback)
 			callback = callback.toString();
-		_mobileLiteProxy_.invokeBeanAction(bean, methodName, JSON.stringify(args), callback);
-		//alert( "bean:" + bean + ", method:" + methodName + ", args:" + args + ", callback:" + callback );
+		//_mobileLiteProxy_.invokeBeanAction(bean, methodName, JSON.stringify(args), callback);
+		alert( "bean:" + bean + ", method:" + methodName + ", args:" + args + ", callback:" + callback );
 	}
 };
 
@@ -51,6 +52,6 @@ else window.mobileLite = mobileLite;
 }) ();
 
 $(document).ready(function() {
-	_mobileLiteProxy_.onPageReady();
-	//mobileLite.initBeans(["bean"]);
+	//_mobileLiteProxy_.onPageReady();
+	mobileLite.initBeans([{"bean":{}, "methodNames":["queryContact", "show"], "name":"bean"}]);
 });
