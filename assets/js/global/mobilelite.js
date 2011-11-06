@@ -10,8 +10,8 @@ MobileLiteEngine.prototype = {
 			name: obj.name,
 			engine: this
 		};
-		for each (methodName in obj.methodNames) {
-			window[obj.name][methodName] = function() {
+		for (methodName in obj.methodNames) {
+			window[obj.name][obj.methodNames[methodName]] = function() {
 				var args = Array.prototype.slice.call(arguments);
 				var callback = null;
 				if(args.length >0 && args[args.length - 1] instanceof Function) {
@@ -21,7 +21,7 @@ MobileLiteEngine.prototype = {
 				
 				this.engine.invokeBeanAction(this.name, arguments.callee.methodName, args, callback);
 			}
-			window[obj.name][methodName].methodName = methodName;
+			window[obj.name][methodName].methodName = obj.methodNames[methodName];
 		}
 	},
 	invokeBeanAction: function(bean, methodName, args, callback) {
