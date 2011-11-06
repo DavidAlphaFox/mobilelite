@@ -25,11 +25,10 @@ MobileLiteEngine.prototype = {
 		}
 	},
 	invokeBeanAction: function(bean, methodName, args, callback) {
-		//alert( "bean:" + bean + ", method:" + methodName + ", args:" + args );
 		if(callback)
 			callback = callback.toString();
-		//_mobileLiteProxy_.invokeBeanAction(bean, methodName, JSON.stringify(args), callback);
-		alert( "bean:" + bean + ", method:" + methodName + ", args:" + args + ", callback:" + callback );
+		_mobileLiteProxy_.invokeBeanAction(bean, methodName, JSON.stringify(args), callback);
+		//alert( "bean:" + bean + ", method:" + methodName + ", args:" + args + ", callback:" + callback );
 	}
 };
 
@@ -52,6 +51,6 @@ else window.mobileLite = mobileLite;
 }) ();
 
 $(document).ready(function() {
-	//_mobileLiteProxy_.onPageReady();
-	mobileLite.initBeans([{"bean":{}, "methodNames":["queryContact", "show"], "name":"bean"}]);
+	_mobileLiteProxy_.onPageReady();
+	//mobileLite.initBeans([{"bean":{}, "methodNames":["queryContact", "show"], "name":"bean"}]);
 });
