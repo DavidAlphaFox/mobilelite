@@ -36,34 +36,36 @@ MobileLiteEngine.prototype = {
 var mobileLite = {
 	engine: new MobileLiteEngine(),
 	initBeans: function(beans) {
-		//alert("initBeans:start");
+		alert("initBeans:start");
 		if(!window["_mobileLiteProxy_"]) {
 			this.engine.invokeBeanAction = function (beanName, methodName, args, callback) {
 				if(callback)
 					callback = callback.toString();
-				_mobileLiteProxy_.invokeBeanAction(bean, methodName, args, callback);
+				_mobileLiteProxy_.invokeBeanAction(beanName, methodName, args, callback);
 			};
 			window._mobileLiteProxy_ = {
 				invokeBeanAction: function (beanName, methodName, args, callback) {
 					var obj = {
 						bean: beanName,
 						method: methodName,
-						param: args,
+						params: args,
 						callback: callback
 					};
 					
-					alert(JSON.stringify(obj));
+					var encodeRequest = JSON.stringify(obj).replace(/\\/g, "%5c");
+					alert(encodeRequest);
 					
-					window.location = "mobilelite:" + JSON.stringify(obj);
+					window.location = "mobilelite:" + encodeRequest;
 				}
 			};
 		}
 		for (bean in beans) {
 			this.engine.createLiteProxy(beans[bean]);
 		}
-		//alert("initBeans:end");
+		alert("initBeans:end");
 	},
 	doCallback: function(result, callback) {
+		alert(callback);
 		var cbFun = eval(callback);
 		cbFun(result);
 	}
