@@ -59,27 +59,27 @@ public class GingerbreadWebViewClient extends LiteWebViewClient {
 				if(jo.has(MobileLiteConstants.PARAM_KEY_METHOD)) 
 					methodName = jsonParam.getAsJsonObject().get(MobileLiteConstants.PARAM_KEY_METHOD).getAsString();
 				else {
-					Log.e("Invoke Bean Action", "request should have 'bean' element");
+					Log.e("Invoke Bean Action", "request should have 'method' element");
 					requestParsed = false;
 				}
 
 				if(jo.has(MobileLiteConstants.PARAM_KEY_PARAMS)) 
 					params = jsonParam.getAsJsonObject().get(MobileLiteConstants.PARAM_KEY_PARAMS);
 				else {
-					Log.e("Invoke Bean Action", "request should have 'bean' element");
+					Log.e("Invoke Bean Action", "request should have 'params' element");
 					requestParsed = false;
 				}
 
-				if(jo.has(MobileLiteConstants.PARAM_KEY_METHOD)) 
-					methodName = jsonParam.getAsJsonObject().get(MobileLiteConstants.PARAM_KEY_METHOD).getAsString();
+				if(jo.has(MobileLiteConstants.PARAM_KEY_CALLBACK)) 
+					callback = jsonParam.getAsJsonObject().get(MobileLiteConstants.PARAM_KEY_CALLBACK).getAsString();
 				else {
-					Log.e("Invoke Bean Action", "request should have 'bean' element");
+					Log.e("Invoke Bean Action", "request should have 'callback' element");
 					requestParsed = false;
 				}
 			}
 			
 			if(requestParsed) {
-				dispatcher._invokeBeanAction(beanName, methodName, params, callback);
+				dispatcher._invokeBeanAction(view, beanName, methodName, params, callback);
 			}
 			
 			return true;
