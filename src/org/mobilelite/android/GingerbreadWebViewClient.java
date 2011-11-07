@@ -79,7 +79,7 @@ public class GingerbreadWebViewClient extends LiteWebViewClient {
 			}
 			
 			if(requestParsed) {
-				dispatcher._invokeBeanAction(view, beanName, methodName, params, callback);
+				dispatcher._invokeBeanAction(beanName, methodName, params, callback);
 			}
 			
 			return true;

@@ -56,7 +56,9 @@ public class PageEventDispatcher {
 					result = gson.toJson(result);
 				}
 				Log.d("invokeBeanAction", "after gson to json: " + result);
-				webView.loadUrl("javascript:mobileLite.doCallback(" + result + ", " + callback + ")");
+				//callback.replaceAll("\\", "%5c");
+				webView.loadUrl("javascript:mobileLite.doCallback(" + result + ", null)");
+
 			}
 		} catch (SecurityException e) {
 		} catch (JsonSyntaxException e) {
