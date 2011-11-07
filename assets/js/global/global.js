@@ -22,6 +22,7 @@ String.prototype.unescapeHtml = function () {
 } 
 
 $(document).ready(function() {
+	alert("onDocumentReady");
 	// on top navigation item click
 	MOBILELITE.ready();
 	

@@ -36,9 +36,32 @@ MobileLiteEngine.prototype = {
 var mobileLite = {
 	engine: new MobileLiteEngine(),
 	initBeans: function(beans) {
+		//alert("initBeans:start");
+		if(!window["_mobileLiteProxy_"]) {
+			this.engine.invokeBeanAction = function (beanName, methodName, args, callback) {
+				if(callback)
+					callback = callback.toString();
+				_mobileLiteProxy_.invokeBeanAction(bean, methodName, args, callback);
+			};
+			window._mobileLiteProxy_ = {
+				invokeBeanAction: function (beanName, methodName, args, callback) {
+					var obj = {
+						bean: beanName,
+						method: methodName,
+						param: args,
+						callback: callback
+					};
+					
+					alert(JSON.stringify(obj));
+					
+					window.location = "mobilelite:" + JSON.stringify(obj);
+				}
+			};
+		}
 		for (bean in beans) {
 			this.engine.createLiteProxy(beans[bean]);
 		}
+		//alert("initBeans:end");
 	},
 	doCallback: function(result, callback) {
 		var cbFun = eval(callback);
@@ -49,7 +72,7 @@ var mobileLite = {
 if (typeof exports !== 'undefined') exports.mobileLite = mobileLite;
 else window.mobileLite = mobileLite;
 
-_mobileLiteProxy_.onPageReady();
+//_mobileLiteProxy_.onPageReady();
 //mobileLite.initBeans([{"bean":{}, "methodNames":["queryContact", "show"], "name":"bean"}]);
 }) ();
 

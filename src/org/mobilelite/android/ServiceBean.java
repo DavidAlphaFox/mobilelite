@@ -8,7 +8,6 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 public class ServiceBean {
@@ -26,11 +25,10 @@ public class ServiceBean {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Object invoke(String methodName, String jsonParam) {
+	public Object invoke(String methodName, JsonElement jsonParam) {
 		Object result = null;
 		Gson gson = new Gson();
-		JsonParser jsonParser = new JsonParser();
-		JsonElement je = jsonParser.parse(jsonParam);
+		JsonElement je = jsonParam;
 		
 		JsonArray jaParams = null;
 		if(je.isJsonArray()) {
