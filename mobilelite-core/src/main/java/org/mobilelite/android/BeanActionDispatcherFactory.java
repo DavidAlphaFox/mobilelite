@@ -18,7 +18,7 @@ package org.mobilelite.android;
 
 import android.webkit.WebView;
 
-public class EventDispatcherFactory {
+public class BeanActionDispatcherFactory {
 
 	public BeanActionDispatcher get(WebView view) {
 		BeanActionDispatcher dispatcher = new BeanActionDispatcher(view);
