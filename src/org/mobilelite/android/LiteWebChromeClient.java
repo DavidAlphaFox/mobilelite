@@ -5,7 +5,7 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-public final class LiteWebChromeClient extends WebChromeClient {
+public class LiteWebChromeClient extends WebChromeClient {
 	
 	@Override
 	public boolean onJsAlert(WebView view, String url, String message, JsResult result) {

@@ -52,10 +52,12 @@ var mobileLite = {
 						callback: callback
 					};
 					
-					var encodeRequest = JSON.stringify(obj).replace(/\\/g, "%5c");
+					//var encodeRequest = JSON.stringify(obj).replace(/\\/g, "%5c");
+					var encodeRequest = JSON.stringify(obj);
 					alert(encodeRequest);
 					
-					window.location = "mobilelite:" + encodeRequest;
+					//window.location = "mobilelite:" + encodeRequest;
+					alert("mobilelite:" + encodeRequest);
 				}
 			};
 		}
@@ -65,7 +67,6 @@ var mobileLite = {
 		alert("initBeans:end");
 	},
 	doCallback: function(result, callback) {
-		alert(callback);
 		var cbFun = eval(callback);
 		cbFun(result);
 	}

@@ -57,7 +57,7 @@ public class PageEventDispatcher {
 				}
 				Log.d("invokeBeanAction", "after gson to json: " + result);
 				//callback.replaceAll("\\", "%5c");
-				webView.loadUrl("javascript:mobileLite.doCallback(" + result + ", null)");
+				webView.loadUrl("javascript:mobileLite.doCallback(" + result + ", " + callback + ")");
 
 			}
 		} catch (SecurityException e) {
@@ -95,14 +95,16 @@ public class PageEventDispatcher {
 	
 	public void loadUrl(String url) {
 		webView.getSettings().setJavaScriptEnabled(true);
+		webView.setWebViewClient(new LiteWebViewClient(this));
 		if(Build.VERSION.RELEASE.startsWith("2.3")) {
-			webView.setWebViewClient(new GingerbreadWebViewClient(this));
+			//webView.setWebViewClient(new GingerbreadWebViewClient(this));
+			webView.setWebChromeClient(new GingerbreadWebChromeClient(this));
 		}
 		else {
-			webView.setWebViewClient(new LiteWebViewClient(this));
+			//webView.setWebViewClient(new LiteWebViewClient(this));
 			webView.addJavascriptInterface(this, "_mobileLiteProxy_");
+			webView.setWebChromeClient(new LiteWebChromeClient());
 		}
-		webView.setWebChromeClient(new LiteWebChromeClient());
 		webView.loadUrl(url);
 	}
 	
