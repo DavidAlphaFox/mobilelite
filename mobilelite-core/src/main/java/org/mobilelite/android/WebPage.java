@@ -16,12 +16,9 @@
 
 package org.mobilelite.android;
 
-import com.google.inject.Inject;
-
 import android.webkit.WebView;
 
 public class WebPage {
-	private @Inject EventDispatcherFactory factory;
 	private PageEventDispatcher dispatcher;
 
 	public WebPage(WebView view) {
