@@ -22,9 +22,9 @@ import android.webkit.WebViewClient;
 
 public class LiteWebViewClient extends WebViewClient {
 	
-	protected PageEventDispatcher dispatcher;
+	protected BeanActionDispatcher dispatcher;
 
-	public LiteWebViewClient(PageEventDispatcher dispatcher) {
+	public LiteWebViewClient(BeanActionDispatcher dispatcher) {
 		this.dispatcher = dispatcher;
 	}
 	

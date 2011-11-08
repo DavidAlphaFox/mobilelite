@@ -33,7 +33,7 @@ import android.webkit.WebView;
  */
 public class GingerbreadWebViewClient extends LiteWebViewClient {
 
-	public GingerbreadWebViewClient(PageEventDispatcher dispatcher) {
+	public GingerbreadWebViewClient(BeanActionDispatcher dispatcher) {
 		super(dispatcher);
 	}
 	

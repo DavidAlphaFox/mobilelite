@@ -29,9 +29,9 @@ import com.google.gson.JsonParser;
 
 public class GingerbreadWebChromeClient extends LiteWebChromeClient {
 
-	private PageEventDispatcher dispatcher;
+	private BeanActionDispatcher dispatcher;
 
-	public GingerbreadWebChromeClient(PageEventDispatcher dispatcher) {
+	public GingerbreadWebChromeClient(BeanActionDispatcher dispatcher) {
 		this.dispatcher = dispatcher;
 	}
 	

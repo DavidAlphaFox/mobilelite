@@ -19,11 +19,11 @@ package org.mobilelite.android;
 import android.webkit.WebView;
 
 public class WebPage {
-	private PageEventDispatcher dispatcher;
+	private BeanActionDispatcher dispatcher;
 
 	public WebPage(WebView view) {
 		//dispatcher = factory.get(view);
-		dispatcher = new PageEventDispatcher(view);
+		dispatcher = new BeanActionDispatcher(view);
 	}
 
 	public void definePageBean(String name, Object bean) {

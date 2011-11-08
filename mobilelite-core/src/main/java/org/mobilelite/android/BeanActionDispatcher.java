@@ -32,7 +32,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
-public class PageEventDispatcher {
+public class BeanActionDispatcher {
 	
 	/** The web view which need to communicate with js. */
 	protected WebView webView;
@@ -41,16 +41,15 @@ public class PageEventDispatcher {
 	
 	protected Gson gson = new Gson();
 	
-	public PageEventDispatcher(WebView webView) {
+	public BeanActionDispatcher(WebView webView) {
 		this.webView = webView;
 	}
 	
 	public void invokeBeanAction(String beanName, String methodName, String params, String callback) {
-		Log.d("BeanAction", beanName);
-		Log.d("methodName", methodName);
-		Log.d("params", params);
-		Log.d("callback", callback == null? "null" : callback);
-		//webView.loadUrl("javascript:liteEngine.dispatchEvent(" +event + "," + serializeData(data) + ")");
+//		Log.d("BeanAction", beanName);
+//		Log.d("methodName", methodName);
+//		Log.d("params", params);
+//		Log.d("callback", callback == null? "null" : callback);
 		
 		try {
 			JsonParser jsonParser = new JsonParser();
@@ -67,11 +66,11 @@ public class PageEventDispatcher {
 		try {
 			Object result = bean.invoke(methodName, jsonParams);
 			if (callback != null) {
-				Log.d("invokeBeanAction", "before gson to json: " + result);
+//				Log.d("invokeBeanAction", "before gson to json: " + result);
 				if (result != null) {
 					result = gson.toJson(result);
 				}
-				Log.d("invokeBeanAction", "after gson to json: " + result);
+//				Log.d("invokeBeanAction", "after gson to json: " + result);
 				//callback.replaceAll("\\", "%5c");
 				webView.loadUrl("javascript:mobileLite.doCallback(" + result + ", " + callback + ")");
 

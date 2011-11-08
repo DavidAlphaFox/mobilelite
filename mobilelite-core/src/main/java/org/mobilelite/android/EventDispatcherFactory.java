@@ -20,8 +20,8 @@ import android.webkit.WebView;
 
 public class EventDispatcherFactory {
 
-	public PageEventDispatcher get(WebView view) {
-		PageEventDispatcher dispatcher = new PageEventDispatcher(view);
+	public BeanActionDispatcher get(WebView view) {
+		BeanActionDispatcher dispatcher = new BeanActionDispatcher(view);
 		return dispatcher;
 	}
 
