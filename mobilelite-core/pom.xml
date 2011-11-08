@@ -16,14 +16,14 @@
 
     <developers>
         <developer>
-            <id>mike</id>
-            <name>Michael Burton</name>
-            <email>mb-mavencentral@niskala.org</email>
+            <id>tni</id>
+            <name>Tony Ni</name>
+            <email>nomadshark2000@gmail.com</email>
         </developer>
         <developer>
-            <id>mosabua</id>
-            <name>Manfred Moser</name>
-            <email>manfred@simpligility.com</email>
+            <id>jlj</id>
+            <name>Lingjun Jiang</name>
+            <email>jlj008@gmail.com</email>
         </developer>
     </developers>
     <mailingLists>
