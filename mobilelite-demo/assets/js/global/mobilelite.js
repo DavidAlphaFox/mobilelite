@@ -31,7 +31,7 @@ MobileLiteEngine.prototype = {
 			window[obj.name][methodName] = function() {
 				var args = Array.prototype.slice.call(arguments);
 				var callback = null;
-				if(args.length >0 && args[args.length - 1] instanceof Function) {
+				if (args.length >0 && args[args.length - 1] instanceof Function) {
 					callback = args[args.length - 1];
 					args = args.slice(0, args.length - 1);
 				}
@@ -41,18 +41,20 @@ MobileLiteEngine.prototype = {
 			window[obj.name][methodName].methodName = methodName;
 		}
 	},
-	invokeBeanAction: function(bean, methodName, args, callback) {
-		if(callback)
+	invokeBeanAction: function(beanName, methodName, args, callback) {
+		if (callback)
 			callback = callback.toString();
-		_mobileLiteProxy_.invokeBeanAction(bean, methodName, JSON.stringify(args), callback);
-		//alert( "bean:" + bean + ", method:" + methodName + ", args:" + args + ", callback:" + callback );
+		_mobileLiteProxy_.invokeBeanAction(beanName, methodName, JSON.stringify(args), callback);
 	}
 };
 
-var mobileLite = {
+function MobileLiteObject () {
+}
+
+MobileLiteObject.prototype = {
 	engine: new MobileLiteEngine(),
 	initBeans: function(beans) {
-		alert("initBeans:start");
+		//alert("initBeans:start");
 		if(!window["_mobileLiteProxy_"]) {
 			this.engine.invokeBeanAction = function (beanName, methodName, args, callback) {
 				if(callback)
@@ -70,9 +72,6 @@ var mobileLite = {
 					
 					//var encodeRequest = JSON.stringify(obj).replace(/\\/g, "%5c");
 					var encodeRequest = JSON.stringify(obj);
-					alert(encodeRequest);
-					
-					//window.location = "mobilelite:" + encodeRequest;
 					alert("mobilelite:" + encodeRequest);
 				}
 			};
@@ -80,13 +79,18 @@ var mobileLite = {
 		for (bean in beans) {
 			this.engine.createLiteProxy(beans[bean]);
 		}
-		alert("initBeans:end");
+		//alert("initBeans:end");
 	},
 	doCallback: function(result, callback) {
 		var cbFun = eval(callback);
 		cbFun(result);
+	},
+	newInstance: function() {
+		return new MobileLiteObject();
 	}
 };
+
+var mobileLite = new MobileLiteObject();
 
 if (typeof exports !== 'undefined') exports.mobileLite = mobileLite;
 else window.mobileLite = mobileLite;
