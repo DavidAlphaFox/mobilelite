@@ -41,19 +41,22 @@ MobileLiteEngine.prototype = {
 			window[obj.name][methodName].methodName = methodName;
 		}
 	},
-	invokeBeanAction: function(bean, methodName, args, callback) {
+	invokeBeanAction: function(beanName, methodName, args, callback) {
 		if (callback)
 			callback = callback.toString();
-		_mobileLiteProxy_.invokeBeanAction(bean, methodName, JSON.stringify(args), callback);
+		_mobileLiteProxy_.invokeBeanAction(beanName, methodName, JSON.stringify(args), callback);
 	}
 };
 
-var mobileLite = {
+function MobileLiteObject () {
+}
+
+MobileLiteObject.prototype = {
 	engine: new MobileLiteEngine(),
 	initBeans: function(beans) {
-		alert("initBeans:start");
-		if (!window["_mobileLiteProxy_"]) {
-			this.engine.invokeBeanAction = function(beanName, methodName, args, callback) {
+		//alert("initBeans:start");
+		if(!window["_mobileLiteProxy_"]) {
+			this.engine.invokeBeanAction = function (beanName, methodName, args, callback) {
 				if(callback)
 					callback = callback.toString();
 				_mobileLiteProxy_.invokeBeanAction(beanName, methodName, args, callback);
@@ -76,13 +79,18 @@ var mobileLite = {
 		for (bean in beans) {
 			this.engine.createLiteProxy(beans[bean]);
 		}
-		alert("initBeans:end");
+		//alert("initBeans:end");
 	},
 	doCallback: function(result, callback) {
 		var cbFun = eval(callback);
 		cbFun(result);
+	},
+	newInstance: function() {
+		return new MobileLiteObject();
 	}
 };
+
+var mobileLite = new MobileLiteObject();
 
 if (typeof exports !== 'undefined') exports.mobileLite = mobileLite;
 else window.mobileLite = mobileLite;
