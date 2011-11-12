@@ -14,25 +14,8 @@
  * limitations under the License.
  */
 
-package org.mobilelite.android;
+package org.mobilelite;
 
-import android.webkit.WebView;
-
-public class WebPage {
-	
-	private BeanActionDispatcher dispatcher;
-
-	public WebPage(WebView view) {
-		//dispatcher = factory.get(view);
-		dispatcher = new BeanActionDispatcher(view);
-	}
-
-	public void definePageBean(String name, Object bean) {
-		dispatcher.definePageBean(name, bean);
-	}
-	
-	public void loadUrl(String url) {
-		dispatcher.loadUrl(url);
-	}
+public class TestGingerbreadWebViewClient {
 
 }

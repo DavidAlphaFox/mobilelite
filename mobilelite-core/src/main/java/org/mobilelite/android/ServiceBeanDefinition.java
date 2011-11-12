@@ -18,6 +18,7 @@ package org.mobilelite.android;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.mobilelite.annotation.Service;
@@ -52,7 +53,7 @@ public class ServiceBeanDefinition {
 			if (methods[i].isAnnotationPresent(ServiceMethod.class)) {
 				// is service method, need to be exposed to definition
 				String methodName = methods[i].getName();
-				if(!methodNames.contains(methodName)) {
+				if (!methodNames.contains(methodName)) {
 					methodNames.add(methods[i].getName());
 				}
 			}
@@ -64,7 +65,7 @@ public class ServiceBeanDefinition {
 	}
 
 	public List<String> getMethodNames() {
-		return methodNames;
+		return Collections.unmodifiableList(methodNames);
 	}
 
 }

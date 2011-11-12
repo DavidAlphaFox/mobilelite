@@ -47,7 +47,7 @@ public class GingerbreadWebViewClient extends LiteWebViewClient {
 			JsonParser jsonParser = new JsonParser();
 			JsonElement jsonParam = jsonParser.parse(request);
 			
-			if(jsonParam.isJsonNull() || jsonParam.isJsonPrimitive()) {
+			if (jsonParam.isJsonNull() || jsonParam.isJsonPrimitive()) {
 				Log.e("Invoke Bean Action", "request should be in format {bean:'beanName', method:'methodName', params:[], callback:'callback string' }");
 				return true;
 			}
@@ -55,43 +55,41 @@ public class GingerbreadWebViewClient extends LiteWebViewClient {
 			String beanName = null, methodName = null, callback = null;
 			JsonElement params = null;
 			boolean requestParsed = true;
-			if(jsonParam.isJsonArray()) {
+			if (jsonParam.isJsonArray()) {
 				JsonArray ja = jsonParam.getAsJsonArray();
-				if(ja.size()  == 4) {
+				if (ja.size()  == 4) {
 					beanName = ja.get(1).getAsString();
 					methodName = ja.get(2).getAsString();
 					params = ja.get(3);
 					callback = ja.get(4).getAsString();
-				}
-				else {
+				} else {
 					Log.e("Invoke Bean Action", "request should have 4 element");
 					requestParsed = false;
 				}
-			}
-			else if(jsonParam.isJsonObject()) {
+			} else if (jsonParam.isJsonObject()) {
 				JsonObject jo = jsonParam.getAsJsonObject(); 
-				if(jo.has(MobileLiteConstants.PARAM_KEY_BEAN)) 
+				if (jo.has(MobileLiteConstants.PARAM_KEY_BEAN)) 
 					beanName = jsonParam.getAsJsonObject().get(MobileLiteConstants.PARAM_KEY_BEAN).getAsString();
 				else {
 					Log.e("Invoke Bean Action", "request should have 'bean' element");
 					requestParsed = false;
 				}
 
-				if(jo.has(MobileLiteConstants.PARAM_KEY_METHOD)) 
+				if (jo.has(MobileLiteConstants.PARAM_KEY_METHOD)) 
 					methodName = jsonParam.getAsJsonObject().get(MobileLiteConstants.PARAM_KEY_METHOD).getAsString();
 				else {
 					Log.e("Invoke Bean Action", "request should have 'method' element");
 					requestParsed = false;
 				}
 
-				if(jo.has(MobileLiteConstants.PARAM_KEY_PARAMS)) 
+				if (jo.has(MobileLiteConstants.PARAM_KEY_PARAMS)) 
 					params = jsonParam.getAsJsonObject().get(MobileLiteConstants.PARAM_KEY_PARAMS);
 				else {
 					Log.e("Invoke Bean Action", "request should have 'params' element");
 					requestParsed = false;
 				}
 
-				if(jo.has(MobileLiteConstants.PARAM_KEY_CALLBACK)) 
+				if (jo.has(MobileLiteConstants.PARAM_KEY_CALLBACK)) 
 					callback = jsonParam.getAsJsonObject().get(MobileLiteConstants.PARAM_KEY_CALLBACK).getAsString();
 				else {
 					Log.e("Invoke Bean Action", "request should have 'callback' element");
@@ -99,7 +97,7 @@ public class GingerbreadWebViewClient extends LiteWebViewClient {
 				}
 			}
 			
-			if(requestParsed) {
+			if (requestParsed) {
 				dispatcher._invokeBeanAction(beanName, methodName, params, callback);
 			}
 			

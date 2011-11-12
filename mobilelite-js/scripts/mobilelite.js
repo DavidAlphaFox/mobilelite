@@ -31,7 +31,7 @@ MobileLiteEngine.prototype = {
 			window[obj.name][methodName] = function() {
 				var args = Array.prototype.slice.call(arguments);
 				var callback = null;
-				if(args.length >0 && args[args.length - 1] instanceof Function) {
+				if (args.length >0 && args[args.length - 1] instanceof Function) {
 					callback = args[args.length - 1];
 					args = args.slice(0, args.length - 1);
 				}
@@ -42,7 +42,7 @@ MobileLiteEngine.prototype = {
 		}
 	},
 	invokeBeanAction: function(bean, methodName, args, callback) {
-		if(callback)
+		if (callback)
 			callback = callback.toString();
 		_mobileLiteProxy_.invokeBeanAction(bean, methodName, JSON.stringify(args), callback);
 	}
@@ -52,8 +52,8 @@ var mobileLite = {
 	engine: new MobileLiteEngine(),
 	initBeans: function(beans) {
 		alert("initBeans:start");
-		if(!window["_mobileLiteProxy_"]) {
-			this.engine.invokeBeanAction = function (beanName, methodName, args, callback) {
+		if (!window["_mobileLiteProxy_"]) {
+			this.engine.invokeBeanAction = function(beanName, methodName, args, callback) {
 				if(callback)
 					callback = callback.toString();
 				_mobileLiteProxy_.invokeBeanAction(beanName, methodName, args, callback);

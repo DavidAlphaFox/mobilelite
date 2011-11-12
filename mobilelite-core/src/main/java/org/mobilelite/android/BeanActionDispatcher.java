@@ -111,11 +111,10 @@ public class BeanActionDispatcher {
 	public void loadUrl(String url) {
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.setWebViewClient(new LiteWebViewClient(this));
-		if(Build.VERSION.RELEASE.startsWith("2.3")) {
+		if (Build.VERSION.RELEASE.startsWith("2.3")) {
 			//webView.setWebViewClient(new GingerbreadWebViewClient(this));
 			webView.setWebChromeClient(new GingerbreadWebChromeClient(this));
-		}
-		else {
+		} else {
 			//webView.setWebViewClient(new LiteWebViewClient(this));
 			webView.addJavascriptInterface(this, "_mobileLiteProxy_");
 			webView.setWebChromeClient(new LiteWebChromeClient());

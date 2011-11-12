@@ -21,10 +21,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mobilelite.annotation.ServiceMethod;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.JsonParseException;
 
 public class ServiceBean {
 	
@@ -47,12 +49,12 @@ public class ServiceBean {
 		JsonElement je = jsonParam;
 		
 		JsonArray jaParams = null;
-		if(je.isJsonArray()) {
+		if (je.isJsonArray()) {
 			jaParams = je.getAsJsonArray();
-		} else if(je.isJsonObject() || je.isJsonPrimitive()) {
+		} else if (je.isJsonObject() || je.isJsonPrimitive()) {
 			jaParams = new JsonArray();
 			jaParams.add(je);
-		} else if(je.isJsonNull()) {
+		} else if (je.isJsonNull()) {
 			jaParams = new JsonArray();
 		}
 
@@ -68,7 +70,7 @@ public class ServiceBean {
 				
 				result = method.invoke(bean, params.toArray());
 				break;
-			} catch (JsonSyntaxException e) {
+			} catch (JsonParseException e) {
 			} catch (IllegalArgumentException e) {
 			} catch (IllegalAccessException e) {
 			} catch (InvocationTargetException e) {
@@ -82,7 +84,8 @@ public class ServiceBean {
 		List<Method> methods = new ArrayList<Method>();
 		Method[] beanMethods = bean.getClass().getDeclaredMethods();
 		for (Method method : beanMethods) {
-			if (method.getName().equals(methodName) 
+			if (method.isAnnotationPresent(ServiceMethod.class) 
+					&& method.getName().equals(methodName) 
 					&& method.getParameterTypes().length == paramNum)
 				methods.add(method);
 		}
