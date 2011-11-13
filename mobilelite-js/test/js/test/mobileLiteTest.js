@@ -202,7 +202,7 @@ $(document).ready(function(){
 	test("Invoke Bean Action Method with callback ", function() {
 		delete(window["testProxyBean"]);
 		var mobileLiteEngine = mobileLiteMock.initTest();
-		expect(8);
+		expect(21);
 		var obj1 = {
 			a: "a",
 			b: "b",
@@ -231,11 +231,28 @@ $(document).ready(function(){
 								methodNames: ["testCallWithOneComplexArg", "testCallWithComplexArgs"]
 							 }]);
 		testProxyBean.testCallWithOneComplexArg(obj1, function() {
-			ok( true, "The callback method is correctly called" );
+			ok( true, "The callback method is correctly called1" );
+		} );
+		testProxyBean.testCallWithOneComplexArg(obj1, function() {
+			ok( true, "The callback method is correctly called2" );
 		} );
 		testProxyBean.testCallWithComplexArgs(obj1, obj2,  function(a) {
-			ok( true, "The callback method with arguments is correctly called" );
-			deepEqual(a, obj1, "the first complex argument is correctly passed");
+			ok( true, "The callback method with arguments is correctly called1" );
+			deepEqual(a, obj1, "the first complex argument is correctly passed1");
+		} );
+		testProxyBean.testCallWithComplexArgs(obj1, obj2,  function(a) {
+			ok( true, "The callback method with arguments is correctly called2" );
+			deepEqual(a, obj1, "the first complex argument is correctly passed2");
+		} );
+		var cbObj = {
+			a: obj1,
+			callback: function(a) {
+				ok( true, "The callback method within a object is correctly called" );
+				deepEqual(a, this.a, "the first complex argument is correctly passed");
+			}
+		};
+		testProxyBean.testCallWithComplexArgs(obj1, obj2, function(a) {
+			cbObj.callback(a);
 		} );
 	});
 
@@ -306,7 +323,7 @@ $(document).ready(function(){
 	test("Invoke Bean Action Method with callback ", function() {
 		delete(window["testProxyBean"]);
 		var mobileLiteEngine = mobileLiteMock.initGingerBreadTest();
-		expect(8);
+		expect(21);
 		var obj1 = {
 			a: "a",
 			b: "b",
@@ -335,11 +352,28 @@ $(document).ready(function(){
 								methodNames: ["testCallWithOneComplexArg", "testCallWithComplexArgs"]
 							 }]);
 		testProxyBean.testCallWithOneComplexArg(obj1, function() {
-			ok( true, "The callback method is correctly called" );
+			ok( true, "The callback method is correctly called1" );
+		} );
+		testProxyBean.testCallWithOneComplexArg(obj1, function() {
+			ok( true, "The callback method is correctly called2" );
 		} );
 		testProxyBean.testCallWithComplexArgs(obj1, obj2,  function(a) {
-			ok( true, "The callback method with arguments is correctly called" );
-			deepEqual(a, obj1, "the first complex argument is correctly passed");
+			ok( true, "The callback method with arguments is correctly called1" );
+			deepEqual(a, obj1, "the first complex argument is correctly passed1");
+		} );
+		testProxyBean.testCallWithComplexArgs(obj1, obj2,  function(a) {
+			ok( true, "The callback method with arguments is correctly called2" );
+			deepEqual(a, obj1, "the first complex argument is correctly passed2");
+		} );
+		var cbObj = {
+			a: obj1,
+			callback: function(a) {
+				ok( true, "The callback method within a object is correctly called" );
+				deepEqual(a, this.a, "the first complex argument is correctly passed");
+			}
+		};
+		testProxyBean.testCallWithComplexArgs(obj1, obj2, function(a) {
+			cbObj.callback(a);
 		} );
 	});
 });
