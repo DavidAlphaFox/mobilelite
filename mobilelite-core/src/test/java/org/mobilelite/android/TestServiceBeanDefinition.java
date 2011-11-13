@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.mobilelite;
+package org.mobilelite.android;
 
 import static org.junit.Assert.*;
 import org.junit.Test;

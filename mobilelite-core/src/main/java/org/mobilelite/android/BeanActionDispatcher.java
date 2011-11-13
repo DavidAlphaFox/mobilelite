@@ -63,6 +63,9 @@ public class BeanActionDispatcher {
 
 	void _invokeBeanAction(String beanName, String methodName, JsonElement jsonParams, String callback) {
 		ServiceBean bean = beans.get(beanName);
+		if (bean == null) {
+			Log.e("invokeBeanAction", "service bean not exists");
+		}
 		try {
 			Object result = bean.invoke(methodName, jsonParams);
 			if (callback != null) {

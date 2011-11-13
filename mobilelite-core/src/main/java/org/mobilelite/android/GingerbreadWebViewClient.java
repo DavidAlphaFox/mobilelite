@@ -39,7 +39,7 @@ public class GingerbreadWebViewClient extends LiteWebViewClient {
 	
 	@Override
 	public boolean shouldOverrideUrlLoading(WebView view, String url) {
-		if(url.startsWith(MobileLiteConstants.PROTOCOL_MOBILELITE)) {
+		if (url.startsWith(MobileLiteConstants.PROTOCOL_MOBILELITE)) {
 			Log.d("request", url);
 			String request = URLDecoder.decode(url.substring(MobileLiteConstants.PROTOCOL_MOBILELITE.length()));
 			Log.d("decoded request", request);

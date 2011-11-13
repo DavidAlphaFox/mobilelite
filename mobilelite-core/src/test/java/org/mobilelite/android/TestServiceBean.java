@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.mobilelite;
+package org.mobilelite.android;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +84,13 @@ public class TestServiceBean {
 		assertEquals(2, ((List<User>) result).size());
 		assertEquals("new-jim1", ((List<User>) result).get(0).getUsername());
 		assertEquals("new-jim2", ((List<User>) result).get(1).getUsername());
+	}
+	
+	@Test
+	public void testInvokeNonExistMethod() {
+		je = jsonParser.parse("aMethod");
+		Object result = serviceBean.invoke("aMethod", je);
+		assertNull(result);
 	}
 	
 	@Service
