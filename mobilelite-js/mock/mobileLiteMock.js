@@ -69,6 +69,7 @@ mobileLiteMock = {
 					throw "beanName is not defined in call";
 				if(!jsonData["method"])
 					throw "beanMethod is not defined in call";
+				
 				that.mobileLiteProxy.invokeBeanAction(jsonData.bean, jsonData.method, jsonData.params, jsonData.callback);
 			} 
 			else

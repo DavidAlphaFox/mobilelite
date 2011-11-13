@@ -235,7 +235,7 @@ $(document).ready(function(){
 		} );
 		testProxyBean.testCallWithComplexArgs(obj1, obj2,  function(a) {
 			ok( true, "The callback method with arguments is correctly called" );
-			deepEqual(a, {a: "a", b: "b", c: 1, d: 1.2}, "the first complex argument is correctly passed");
+			deepEqual(a, obj1, "the first complex argument is correctly passed");
 		} );
 	});
 
@@ -301,5 +301,45 @@ $(document).ready(function(){
 							 }]);
 		testProxyBean.testCallWithOneComplexArg(obj1);
 		testProxyBean.testCallWithComplexArgs(obj1, obj2);
+	});
+	
+	test("Invoke Bean Action Method with callback ", function() {
+		delete(window["testProxyBean"]);
+		var mobileLiteEngine = mobileLiteMock.initGingerBreadTest();
+		expect(8);
+		var obj1 = {
+			a: "a",
+			b: "b",
+			c: 1,
+			d: 1.2
+		};
+		var obj2 = {
+			a: "a",
+			b: obj1
+		};
+		var testBean = {
+			testCallWithOneComplexArg: function(a) {
+				ok( true, "The method with one complex argument is correctly called" );
+				deepEqual(a, obj1, "the first argument is correctly passed");
+			},
+			testCallWithComplexArgs: function(a, b) {
+				ok( true, "The method with complex arguments is correctly called" );
+				deepEqual(a, obj1, "the first complex argument is correctly passed");
+				deepEqual(b, obj2, "the second complex argument is correctly passed");
+				return a;
+			}
+		};
+		mobileLiteMock.definePageBean("testProxyBean", testBean);
+		mobileLite.initBeans( [{
+								name: "testProxyBean",
+								methodNames: ["testCallWithOneComplexArg", "testCallWithComplexArgs"]
+							 }]);
+		testProxyBean.testCallWithOneComplexArg(obj1, function() {
+			ok( true, "The callback method is correctly called" );
+		} );
+		testProxyBean.testCallWithComplexArgs(obj1, obj2,  function(a) {
+			ok( true, "The callback method with arguments is correctly called" );
+			deepEqual(a, obj1, "the first complex argument is correctly passed");
+		} );
 	});
 });

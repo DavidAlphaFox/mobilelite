@@ -21,6 +21,21 @@ var MobileLiteEngine = function(mobileLite) {
 
 MobileLiteEngine.prototype = {
 	constructor: MobileLiteEngine,
+	callbackQueue: {},
+	guid: 1,
+	addCallback: function(callback) {
+		var callbackId = "" + this.guid++;
+		this.callbackQueue[callbackId] = callback;
+		return callbackId;
+	},
+	doCallback: function(result, callbackId) {
+		if(this.callbackQueue[callbackId]) {
+			var callback = this.callbackQueue[callbackId];
+			delete this.callbackQueue[callbackId];
+			if(callback instanceof Function)
+				callback(result);
+		}
+	},
 	createLiteProxy: function(obj) {
 		window[obj.name] = {
 			name: obj.name,
@@ -42,8 +57,9 @@ MobileLiteEngine.prototype = {
 		}
 	},
 	invokeBeanAction: function(beanName, methodName, args, callback) {
-		if (callback)
-			callback = callback.toString();
+		if (callback) {
+			callback = this.addCallback(callback);
+		}
 		_mobileLiteProxy_.invokeBeanAction(beanName, methodName, JSON.stringify(args), callback);
 	}
 };
@@ -57,10 +73,12 @@ MobileLiteObject.prototype = {
 		//alert("initBeans:start");
 		if(!window["_mobileLiteProxy_"]) {
 			this.engine.invokeBeanAction = function (beanName, methodName, args, callback) {
-				if(callback)
-					callback = callback.toString();
+				if (callback) {
+					callback = this.addCallback(callback);
+				}
 				_mobileLiteProxy_.invokeBeanAction(beanName, methodName, args, callback);
 			};
+			var thatEngine = this.engine;
 			window._mobileLiteProxy_ = {
 				invokeBeanAction: function (beanName, methodName, args, callback) {
 					var obj = {
@@ -82,8 +100,9 @@ MobileLiteObject.prototype = {
 		//alert("initBeans:end");
 	},
 	doCallback: function(result, callback) {
-		var cbFun = eval('(' + callback + ')' );
-		cbFun(result);
+		//var cbFun = eval('(' + callback + ')' );
+		//cbFun(result);
+		this.engine.doCallback(result, callback);
 	},
 	newInstance: function() {
 		return new MobileLiteObject();
