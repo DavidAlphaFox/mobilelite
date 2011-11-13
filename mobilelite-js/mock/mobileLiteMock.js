@@ -32,11 +32,7 @@ MockMobileLiteProxy.prototype = {
 		}
 		var result = this.beans[beanName][methodName].apply(this.beans[beanName], argObj);
 		if(callback) {
-			var cb = eval(callback);
-			if(!(cb instanceof Function)) {
-				throw "callback is not a function!";
-			}
-			cb(result);
+			mobileLite.doCallback(result,  callback);
 		}
 	},
 	definePageBean: function(beanName, bean) {

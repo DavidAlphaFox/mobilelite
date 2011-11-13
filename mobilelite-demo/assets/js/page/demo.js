@@ -15,7 +15,7 @@
  */
 
 MOBILELITE.libs.readyBody = function() {
-	$("#topNavPassengerInfo").click(function() {
+	$("#button").click(function() {
 		bean.show("你好Tony!", function() {alert('aaa')});
 		bean.show("你好Tony!!");
 		bean.queryContact({id:'q1', name:'qJim'}, function(contact) {

@@ -82,7 +82,7 @@ MobileLiteObject.prototype = {
 		//alert("initBeans:end");
 	},
 	doCallback: function(result, callback) {
-		var cbFun = eval(callback);
+		var cbFun = eval('(' + callback + ')' );
 		cbFun(result);
 	},
 	newInstance: function() {
