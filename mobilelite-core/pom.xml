@@ -29,6 +29,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    
+	<scm>
+		<connection>scm:svn:https://mobilelite.googlecode.com/svn/trunk/mobilelite-core</connection>
+		<url>https://mobilelite.googlecode.com/svn/trunk/mobilelite-core</url>
+	</scm>
 
     <build>
         <defaultGoal>package</defaultGoal>
