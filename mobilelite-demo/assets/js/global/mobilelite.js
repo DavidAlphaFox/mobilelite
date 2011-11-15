@@ -115,6 +115,6 @@ if (typeof exports !== 'undefined') exports.mobileLite = mobileLite;
 else window.mobileLite = mobileLite;
 
 //_mobileLiteProxy_.onPageReady();
-mobileLite.initBeans([{"bean":{}, "methodNames":["queryContact", "show"], "name":"bean"}]);
+//mobileLite.initBeans([{"methodNames":["hello", "readConfig"], "name":"bean"}]);
 }) ();
 
