@@ -15,13 +15,15 @@
  */
 
 MOBILELITE.libs.readyBody = function() {
-	$("#button").click(function() {
-		bean.show("你好Tony!", function() {alert('aaa')});
-		bean.show("你好Tony!!");
-		bean.queryContact({id:'q1', name:'qJim'}, function(contact) {
-			alert(contact);
-			alert("query result: id-" + contact.id + ", name-" + contact.name);
-			$("#result").html(contact.description);
+	$("#helloBtn").click(function() {
+		bean.hello($("#name").val());
+	});
+	
+	$("#infoBtn").click(function() {
+		bean.readConfig(function(config) {
+			$("#result").html(config.info);
 		});
 	});
+	
+	$('#example').tabs();
 }

@@ -1,5 +1,9 @@
 package org.mobilelite;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+
 import org.mobilelite.android.WebPage;
 import org.mobilelite.annotation.Service;
 import org.mobilelite.annotation.ServiceMethod;
@@ -32,18 +36,30 @@ public class MobileLiteActivity extends Activity {
     	
 		@SuppressWarnings("unused")
 		@ServiceMethod
-    	public void show(String text) {
-    		Toast.makeText(MobileLiteActivity.this, text, 200).show();
+    	public void hello(String name) {
+    		Toast.makeText(MobileLiteActivity.this, "hello " + name + "!", 200).show();
     	}
     	
 		@SuppressWarnings("unused")
 		@ServiceMethod
-    	public Contact queryContact(Contact query) {
-			Toast.makeText(MobileLiteActivity.this, "query by id[" + query.getId() + "], [" + query.getName() + "]", 200).show();
-    		Log.d("queryContact", "query by id[" + query.getId() + "], [" + query.getName() + "]");
-    		Contact c = new Contact("1", "Jim");
-    		c.setDescription("Hello <font color=\"red\">" + c.getName() + "<font>!");
-    		return c;
+    	public Config readConfig() {
+			Config result = new Config("no config read");
+			
+			try {
+				InputStreamReader is = new InputStreamReader(getAssets().open("config.properties"));
+				char[] buf = new char[128];
+				int flag = is.read(buf);
+				StringBuffer content = new StringBuffer();
+				while(flag != -1) {
+					content.append(buf, 0, flag);
+					flag = is.read(buf);
+				}
+				result.setInfo(content.toString());
+			} catch (IOException e) {
+				Log.e("MobileLite Demo", "Error open config file", e);
+			}
+			
+			return result;
     	}
     	
     }
