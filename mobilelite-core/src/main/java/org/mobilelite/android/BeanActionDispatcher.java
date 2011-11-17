@@ -125,4 +125,8 @@ public class BeanActionDispatcher {
 		webView.loadUrl(url);
 	}
 	
+	public WebView getWebView() {
+		return webView;
+	}
+	
 }

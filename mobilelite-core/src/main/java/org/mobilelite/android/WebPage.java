@@ -34,5 +34,9 @@ public class WebPage {
 	public void loadUrl(String url) {
 		dispatcher.loadUrl(url);
 	}
+	
+	public WebView getWebView() {
+		return dispatcher.getWebView();
+	}
 
 }
