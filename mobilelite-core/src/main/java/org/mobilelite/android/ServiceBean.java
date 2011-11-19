@@ -27,11 +27,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.annotations.Expose;
 
 public class ServiceBean {
 	
 	private String name;
-	private Object bean;
+	@Expose (serialize = false, deserialize = false) private Object bean;
 
 	public ServiceBean(String name, Object bean) {
 		this.name = name;

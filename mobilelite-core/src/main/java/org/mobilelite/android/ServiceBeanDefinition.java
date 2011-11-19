@@ -30,8 +30,6 @@ public class ServiceBeanDefinition {
 	
 	private List<String> methodNames = new ArrayList<String>();
 	
-	private Object bean;
-	
 	public static ServiceBeanDefinition newInstance(String name, Object bean) {
 		if (bean.getClass().isAnnotationPresent(Service.class)) {
 			// is service object, getting its bean definition
@@ -43,11 +41,10 @@ public class ServiceBeanDefinition {
 	
 	private ServiceBeanDefinition(String name, Object bean) {
 		this.name = name;
-		this.bean = bean;
-		initMethodNames();
+		initMethodNames(bean);
 	}
 	
-	private void initMethodNames() {
+	private void initMethodNames(Object bean) {
 		Method[] methods = bean.getClass().getDeclaredMethods();
 		for (int i = 0; i < methods.length; i++) {
 			if (methods[i].isAnnotationPresent(ServiceMethod.class)) {
