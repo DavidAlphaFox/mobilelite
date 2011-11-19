@@ -35,6 +35,10 @@ public class WebPage {
 		dispatcher.loadUrl(url);
 	}
 	
+	public void loadDataWithBaseURL(String baseUrl, String data, String miniType, String encoding, String historyUrl) {
+		dispatcher.loadDataWithBaseURL(baseUrl, data, miniType, encoding, historyUrl);
+	}
+	
 	public WebView getWebView() {
 		return dispatcher.getWebView();
 	}

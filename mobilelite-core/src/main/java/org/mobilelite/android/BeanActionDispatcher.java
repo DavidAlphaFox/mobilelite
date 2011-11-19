@@ -41,8 +41,11 @@ public class BeanActionDispatcher {
 	
 	protected Gson gson = new Gson();
 	
+	protected boolean webViewInitialized;
+	
 	public BeanActionDispatcher(WebView webView) {
 		this.webView = webView;
+		// don't init webview here for unit test reason
 	}
 	
 	public void invokeBeanAction(String beanName, String methodName, String params, String callback) {
@@ -112,6 +115,17 @@ public class BeanActionDispatcher {
 	}
 	
 	public void loadUrl(String url) {
+		initWebView();
+		webView.loadUrl(url);
+	}
+
+	public void loadDataWithBaseURL(String baseUrl, String data, String miniType, String encoding, String historyUrl) {
+		initWebView();
+		webView.loadDataWithBaseURL(baseUrl, data, miniType, encoding, historyUrl);
+	}
+	
+	private void initWebView() {
+		if (webViewInitialized) return;
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.setWebViewClient(new LiteWebViewClient(this));
 		if (Build.VERSION.RELEASE.startsWith("2.3")) {
@@ -122,7 +136,7 @@ public class BeanActionDispatcher {
 			webView.addJavascriptInterface(this, "_mobileLiteProxy_");
 			webView.setWebChromeClient(new LiteWebChromeClient());
 		}
-		webView.loadUrl(url);
+		webViewInitialized = true;
 	}
 	
 	public WebView getWebView() {
