@@ -23,16 +23,22 @@ import java.util.List;
 
 import org.mobilelite.annotation.ServiceMethod;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import android.webkit.WebView;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
 
 public class ServiceBean {
-	
+
 	private String name;
-	@Expose (serialize = false, deserialize = false) private Object bean;
+	@Expose(serialize = false, deserialize = false)
+	private Object bean;
 
 	public ServiceBean(String name, Object bean) {
 		this.name = name;
@@ -43,12 +49,22 @@ public class ServiceBean {
 		return ServiceBeanDefinition.newInstance(name, bean);
 	}
 
+	private Method[] getBeanMethods(String methodName, int paramNum) {
+		List<Method> methods = new ArrayList<Method>();
+		Method[] beanMethods = bean.getClass().getDeclaredMethods();
+		for (Method method : beanMethods) {
+			if (method.isAnnotationPresent(ServiceMethod.class) && method.getName().equals(methodName)
+					&& method.getParameterTypes().length == paramNum)
+				methods.add(method);
+		}
+		return methods.toArray(new Method[] {});
+	}
+
 	@SuppressWarnings("unchecked")
-	public Object invoke(String methodName, JsonElement jsonParam) {
-		Object result = null;
+	public void invoke(WebView webView, String methodName, JsonElement jsonParam, String callback) {
 		Gson gson = new Gson();
 		JsonElement je = jsonParam;
-		
+
 		JsonArray jaParams = null;
 		if (je.isJsonArray()) {
 			jaParams = je.getAsJsonArray();
@@ -68,8 +84,13 @@ public class ServiceBean {
 				for (int i = 0; i < paramClasses.length; i++) {
 					params.add(gson.fromJson(jaParams.get(i), paramClasses[i]));
 				}
-				
-				result = method.invoke(bean, params.toArray());
+
+				ServiceMethod serviceMethod = method.getAnnotation(ServiceMethod.class);
+				if (serviceMethod.showDialog()) {
+					executeMethodInDialog(bean, method, params, serviceMethod, webView, callback);
+				} else {
+					executeMethod(bean, method, params, webView, callback);
+				}
 				break;
 			} catch (JsonParseException e) {
 			} catch (IllegalArgumentException e) {
@@ -78,19 +99,55 @@ public class ServiceBean {
 			}
 		}
 
-		return result;
 	}
 
-	private Method[] getBeanMethods(String methodName, int paramNum) {
-		List<Method> methods = new ArrayList<Method>();
-		Method[] beanMethods = bean.getClass().getDeclaredMethods();
-		for (Method method : beanMethods) {
-			if (method.isAnnotationPresent(ServiceMethod.class) 
-					&& method.getName().equals(methodName) 
-					&& method.getParameterTypes().length == paramNum)
-				methods.add(method);
+	private void executeMethodInDialog(final Object bean, final Method method, final List<Object> params, final ServiceMethod serviceMethod,
+			final WebView webView, final String callback) {
+		AsyncTask<Object, Integer, Long> asyncTask = new AsyncTask<Object, Integer, Long>() {
+			ProgressDialog progDialog;
+
+			@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				progDialog = ProgressDialog.show(webView.getContext(), serviceMethod.title(), serviceMethod.message(), true);
+			}
+
+			@Override
+			protected Long doInBackground(Object... arg0) {
+				try {
+					executeMethod(bean, method, params, webView, callback);
+				} catch (SecurityException e) {
+				} catch (JsonSyntaxException e) {
+				} catch (IllegalArgumentException e) {
+				} catch (IllegalAccessException e) {
+				} catch (InvocationTargetException e) {
+				}
+				return 100L;
+			}
+
+			@Override
+			protected void onPostExecute(Long result) {
+				super.onPostExecute(result);
+				progDialog.dismiss();
+			}
+
+		};
+		asyncTask.execute();
+	}
+
+	private void executeMethod(Object bean, Method method, List<Object> params, WebView webView, String callback) throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
+		Object result = method.invoke(bean, params.toArray());
+		if (callback != null) {
+//			Log.d("invokeBeanAction", "before gson to json: " + result);
+			if (result != null) {
+				result = (new Gson()).toJson(result);
+			}
+//			Log.d("invokeBeanAction", "after gson to json: " + result);
+			//callback.replaceAll("\\", "%5c");
+			webView.loadUrl("javascript:mobileLite.doCallback(" + result + ", " + callback + ")");
+
 		}
-		return methods.toArray(new Method[]{});
 	}
 
 }

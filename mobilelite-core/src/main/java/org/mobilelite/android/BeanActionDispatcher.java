@@ -64,6 +64,7 @@ public class BeanActionDispatcher {
 		}
 	}
 
+	/*
 	void _invokeBeanAction(String beanName, String methodName, JsonElement jsonParams, String callback) {
 		ServiceBean bean = beans.get(beanName);
 		if (bean == null) {
@@ -81,6 +82,20 @@ public class BeanActionDispatcher {
 				webView.loadUrl("javascript:mobileLite.doCallback(" + result + ", " + callback + ")");
 
 			}
+		} catch (SecurityException e) {
+		} catch (JsonSyntaxException e) {
+		} catch (IllegalArgumentException e) {
+		}
+	}
+	*/
+	
+	void _invokeBeanAction(String beanName, String methodName, JsonElement jsonParams, String callback) {
+		ServiceBean bean = beans.get(beanName);
+		if (bean == null) {
+			Log.e("invokeBeanAction", "service bean not exists");
+		}
+		try {
+			bean.invoke(webView, methodName, jsonParams, callback);
 		} catch (SecurityException e) {
 		} catch (JsonSyntaxException e) {
 		} catch (IllegalArgumentException e) {

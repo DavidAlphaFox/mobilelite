@@ -26,5 +26,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface ServiceMethod {
+	boolean showDialog() default false;
+    String title() default "no title";
+    String message() default "default message"; 
 
 }

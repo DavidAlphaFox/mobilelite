@@ -30,6 +30,7 @@ import org.mobilelite.annotation.ServiceMethod;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+@Ignore
 public class TestServiceBean {
 	
 	JsonParser jsonParser;
@@ -42,6 +43,7 @@ public class TestServiceBean {
 		serviceBean = new ServiceBean("bean", new UserService());
 	}
 	
+	/*
 	@Test
 	public void testInvokeFindUserByString() {
 		je = jsonParser.parse("jim");
@@ -92,6 +94,7 @@ public class TestServiceBean {
 		Object result = serviceBean.invoke("aMethod", je);
 		assertNull(result);
 	}
+	*/
 	
 	@Service
 	public class UserService {
