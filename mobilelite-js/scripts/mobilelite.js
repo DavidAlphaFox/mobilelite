@@ -97,6 +97,9 @@ MobileLiteObject.prototype = {
 		for (bean in beans) {
 			this.engine.createLiteProxy(beans[bean]);
 		}
+		if(this.onBeansReady) {
+			this.onBeansReady();
+		}
 		//alert("initBeans:end");
 	},
 	doCallback: function(result, callback) {
