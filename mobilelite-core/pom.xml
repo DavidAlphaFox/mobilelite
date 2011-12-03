@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mobilelite</groupId>
 	<artifactId>mobilelite-core</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.2-SNAPSHOT</version>
     <description>A framework for app based on webview in Android.</description>
 
     <licenses>
