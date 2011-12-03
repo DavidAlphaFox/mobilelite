@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mobilelite</groupId>
 	<artifactId>mobilelite-core</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
     <description>A framework for app based on webview in Android.</description>
 
     <licenses>
@@ -31,9 +31,10 @@
     </properties>
     
 	<scm>
-		<connection>scm:svn:https://mobilelite.googlecode.com/svn/trunk/mobilelite-core</connection>
-		<url>https://mobilelite.googlecode.com/svn/trunk/mobilelite-core</url>
-	</scm>
+		<connection>scm:svn:https://mobilelite.googlecode.com/svn/tags/mobilelite-core-0.0.2</connection>
+		<url>https://mobilelite.googlecode.com/svn/tags/mobilelite-core-0.0.2</url>
+	  <developerConnection>scm:svn:https://svn.sonatype.org/spice/tags/mobilelite-core-0.0.2</developerConnection>
+  </scm>
 
     <build>
         <defaultGoal>package</defaultGoal>
@@ -138,9 +139,11 @@
         </plugins>
     </reporting>
 
+	<!-- 
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
         <version>7</version>
     </parent>
+     -->
 </project>
