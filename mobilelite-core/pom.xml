@@ -31,9 +31,8 @@
     </properties>
     
 	<scm>
-		<connection>scm:svn:https://mobilelite.googlecode.com/svn/tags/mobilelite-core-0.0.2</connection>
-		<url>https://mobilelite.googlecode.com/svn/tags/mobilelite-core-0.0.2</url>
-	  <developerConnection>scm:svn:https://svn.sonatype.org/spice/tags/mobilelite-core-0.0.2</developerConnection>
+		<connection>scm:svn:https://mobilelite.googlecode.com/svn/trunk/mobilelite-core</connection>
+		<url>https://mobilelite.googlecode.com/svn/trunk/mobilelite-core</url>
   </scm>
 
     <build>
