@@ -88,7 +88,6 @@ MobileLiteObject.prototype = {
 						callback: callback
 					};
 					
-					//var encodeRequest = JSON.stringify(obj).replace(/\\/g, "%5c");
 					var encodeRequest = JSON.stringify(obj);
 					alert("mobilelite:" + encodeRequest);
 				}
@@ -103,8 +102,6 @@ MobileLiteObject.prototype = {
 		//alert("initBeans:end");
 	},
 	doCallback: function(result, callback) {
-		//var cbFun = eval('(' + callback + ')' );
-		//cbFun(result);
 		this.engine.doCallback(result, callback);
 	},
 	newInstance: function() {
@@ -117,7 +114,5 @@ var mobileLite = new MobileLiteObject();
 if (typeof exports !== 'undefined') exports.mobileLite = mobileLite;
 else window.mobileLite = mobileLite;
 
-//_mobileLiteProxy_.onPageReady();
-//mobileLite.initBeans([{"bean":{}, "methodNames":["queryContact", "show"], "name":"bean"}]);
 }) ();
 
