@@ -41,6 +41,9 @@ public class MobileLiteActivity extends Activity {
      * This is a demo service bean to be called in webpage. Service bean can be used to 
      * handle many thing, e.g. read data from local storage or remote webservice, start
      * a new intent for another activity 
+     * 
+     * <b>Please note the service bean must be annotated with @Service and method to be
+     * exposed in webview need to be annotated with @ServiceMethod</b> 
      *  
      * @author Tony Ni
      * @author Jim Jiang
@@ -53,7 +56,9 @@ public class MobileLiteActivity extends Activity {
     	 * the javascript will pass the inputed name to this method and this method
     	 * will show a Toast message
     	 * 
-    	 * The javascript code:
+    	 * With annotation @ServiceMethod, this method is declared to be used in webview
+    	 * 
+    	 * Javascript consume @code 
     	 * 	$("#helloBtn").click(function() {
     	 *  	bean.hello($("#name").val());
     	 *  });
@@ -71,7 +76,9 @@ public class MobileLiteActivity extends Activity {
     	 * the javascript will call readConfig and display the returned configuration info
     	 * into result zone on the page.
     	 * 
-    	 * The javascript code:
+    	 * With annotation @ServiceMethod, this method is declared to be used in webview
+    	 * 
+    	 * Javascript consume @code 
     	 * 	$("#infoBtn").click(function() {
     	 * 		bean.readConfig(function(config) {
     	 * 			$("#result").html(config.info);
