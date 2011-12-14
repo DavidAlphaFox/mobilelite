@@ -103,7 +103,7 @@ public class ServiceBean {
 
 	private void executeMethodInDialog(final Object bean, final Method method, final List<Object> params, final ServiceMethod serviceMethod,
 			final WebView webView, final String callback) {
-		AsyncTask<Object, Integer, Long> asyncTask = new AsyncTask<Object, Integer, Long>() {
+		AsyncTask<Object, Integer, Object> asyncTask = new AsyncTask<Object, Integer, Object>() {
 			ProgressDialog progDialog;
 
 			@Override
@@ -113,22 +113,32 @@ public class ServiceBean {
 			}
 
 			@Override
-			protected Long doInBackground(Object... arg0) {
+			protected Object doInBackground(Object... arg0) {
 				try {
-					executeMethod(bean, method, params, webView, callback);
+					return method.invoke(bean, params.toArray());
 				} catch (SecurityException e) {
 				} catch (JsonSyntaxException e) {
 				} catch (IllegalArgumentException e) {
 				} catch (IllegalAccessException e) {
 				} catch (InvocationTargetException e) {
 				}
-				return 100L;
+				return null;
 			}
 
 			@Override
-			protected void onPostExecute(Long result) {
+			protected void onPostExecute(Object result) {
 				super.onPostExecute(result);
 				progDialog.dismiss();
+				if (callback != null) {
+//					Log.d("invokeBeanAction", "before gson to json: " + result);
+					if (result != null) {
+						result = (new Gson()).toJson(result);
+					}
+//					Log.d("invokeBeanAction", "after gson to json: " + result);
+					//callback.replaceAll("\\", "%5c");
+					webView.loadUrl("javascript:mobileLite.doCallback(" + result + ", " + callback + ")");
+
+				}
 			}
 
 		};
