@@ -86,13 +86,13 @@ public class ServiceBean {
 				}
 
 				ServiceMethod serviceMethod = method.getAnnotation(ServiceMethod.class);
-				if (serviceMethod.showDialog()) {
+				if (serviceMethod.showDialog()|| serviceMethod.execAsync()) {
 					executeMethodInDialog(bean, method, params, serviceMethod, webView, callback);
 				} else {
 					executeMethod(bean, method, params, webView, callback);
 				}
 				break;
-			} catch (JsonParseException e) {
+			} catch (JsonParseException e) { 
 			} catch (IllegalArgumentException e) {
 			} catch (IllegalAccessException e) {
 			} catch (InvocationTargetException e) {
@@ -109,7 +109,9 @@ public class ServiceBean {
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
-				progDialog = ProgressDialog.show(webView.getContext(), serviceMethod.title(), serviceMethod.message(), true);
+				if(serviceMethod.showDialog()) {
+					progDialog = ProgressDialog.show(webView.getContext(), serviceMethod.title(), serviceMethod.message(), true);
+				}
 			}
 
 			@Override
@@ -128,7 +130,9 @@ public class ServiceBean {
 			@Override
 			protected void onPostExecute(Object result) {
 				super.onPostExecute(result);
-				progDialog.dismiss();
+				if(serviceMethod.showDialog()) {
+					progDialog.dismiss();
+				}
 				if (callback != null) {
 //					Log.d("invokeBeanAction", "before gson to json: " + result);
 					if (result != null) {

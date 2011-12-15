@@ -27,6 +27,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface ServiceMethod {
 	boolean showDialog() default false;
+	boolean execAsync() default false;
     String title() default "no title";
     String message() default "default message"; 
 
