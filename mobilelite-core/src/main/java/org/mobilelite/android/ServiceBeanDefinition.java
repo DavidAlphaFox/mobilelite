@@ -45,15 +45,20 @@ public class ServiceBeanDefinition {
 	}
 	
 	private void initMethodNames(Object bean) {
-		Method[] methods = bean.getClass().getDeclaredMethods();
-		for (int i = 0; i < methods.length; i++) {
-			if (methods[i].isAnnotationPresent(ServiceMethod.class)) {
-				// is service method, need to be exposed to definition
-				String methodName = methods[i].getName();
-				if (!methodNames.contains(methodName)) {
-					methodNames.add(methods[i].getName());
+		@SuppressWarnings("rawtypes")
+		Class clazz = bean.getClass();
+		while(clazz != null) {
+			Method[] methods = clazz.getDeclaredMethods();
+			for (int i = 0; i < methods.length; i++) {
+				if (methods[i].isAnnotationPresent(ServiceMethod.class)) {
+					// is service method, need to be exposed to definition
+					String methodName = methods[i].getName();
+					if (!methodNames.contains(methodName)) {
+						methodNames.add(methods[i].getName());
+					}
 				}
 			}
+			clazz = clazz.getSuperclass();
 		}
 	}
 
