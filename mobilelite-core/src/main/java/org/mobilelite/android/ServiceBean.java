@@ -51,11 +51,16 @@ public class ServiceBean {
 
 	private Method[] getBeanMethods(String methodName, int paramNum) {
 		List<Method> methods = new ArrayList<Method>();
-		Method[] beanMethods = bean.getClass().getDeclaredMethods();
-		for (Method method : beanMethods) {
-			if (method.isAnnotationPresent(ServiceMethod.class) && method.getName().equals(methodName)
-					&& method.getParameterTypes().length == paramNum)
-				methods.add(method);
+		@SuppressWarnings("rawtypes")
+		Class clazz = bean.getClass();
+		while(clazz != null) {
+			Method[] beanMethods = clazz.getDeclaredMethods();
+			for (Method method : beanMethods) {
+				if (method.isAnnotationPresent(ServiceMethod.class) && method.getName().equals(methodName)
+						&& method.getParameterTypes().length == paramNum)
+					methods.add(method);
+			}
+			clazz = clazz.getSuperclass();
 		}
 		return methods.toArray(new Method[] {});
 	}
