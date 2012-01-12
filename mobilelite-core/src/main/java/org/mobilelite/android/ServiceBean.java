@@ -145,8 +145,15 @@ public class ServiceBean {
 					}
 //					Log.d("invokeBeanAction", "after gson to json: " + result);
 					//callback.replaceAll("\\", "%5c");
-					webView.loadUrl("javascript:mobileLite.doCallback(" + result + ", " + callback + ")");
+					//webView.loadUrl("javascript:mobileLite.doCallback(" + result + ", " + callback + ")");
 
+					final Object data = result;
+					webView.post(new Runnable() {
+						@Override
+						public void run() {
+							webView.loadUrl("javascript:mobileLite.doCallback(" + data + ", " + callback + ")");
+						}
+					});
 				}
 			}
 
@@ -154,7 +161,7 @@ public class ServiceBean {
 		asyncTask.execute();
 	}
 
-	private void executeMethod(Object bean, Method method, List<Object> params, WebView webView, String callback) throws IllegalArgumentException,
+	private void executeMethod(Object bean, Method method, List<Object> params, final WebView webView, final String callback) throws IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		Object result = method.invoke(bean, params.toArray());
 		if (callback != null) {
@@ -164,7 +171,15 @@ public class ServiceBean {
 			}
 //			Log.d("invokeBeanAction", "after gson to json: " + result);
 			//callback.replaceAll("\\", "%5c");
-			webView.loadUrl("javascript:mobileLite.doCallback(" + result + ", " + callback + ")");
+			//webView.loadUrl("javascript:mobileLite.doCallback(" + result + ", " + callback + ")");
+
+			final Object data = result;
+			webView.post(new Runnable() {
+				@Override
+				public void run() {
+					webView.loadUrl("javascript:mobileLite.doCallback(" + data + ", " + callback + ")");
+				}
+			});
 
 		}
 	}
