@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.mobilelite.android.exception.ServiceBeanInvocationException;
 import org.mobilelite.annotation.Service;
 
 import android.os.Build;
@@ -42,6 +43,8 @@ public class BeanActionDispatcher {
 	protected Gson gson = new Gson();
 	
 	protected boolean webViewInitialized;
+	
+	protected ServiceBeanInvoker invoker = new DefaultServiceBeanInvoker();
 	
 	public BeanActionDispatcher(WebView webView) {
 		this.webView = webView;
@@ -96,15 +99,14 @@ public class BeanActionDispatcher {
 		}
 		try {
 			bean.invoke(webView, methodName, jsonParams, callback);
-		} catch (SecurityException e) {
-		} catch (JsonSyntaxException e) {
-		} catch (IllegalArgumentException e) {
+		} catch (ServiceBeanInvocationException e) {
+			Log.e("invokeBeanAction", "service bean invoke error", e);
 		}
 	}
 
 	public void definePageBean(String name, Object bean) {
 		if (bean.getClass().isAnnotationPresent(Service.class)) {
-			beans.put(name, new ServiceBean(name, bean));
+			beans.put(name, new ServiceBean(name, bean, invoker));
 		}
 	}
 	

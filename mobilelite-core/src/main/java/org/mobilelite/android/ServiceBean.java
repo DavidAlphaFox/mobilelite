@@ -16,22 +16,11 @@
 
 package org.mobilelite.android;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import org.mobilelite.android.exception.ServiceBeanInvocationException;
 
-import org.mobilelite.annotation.ServiceMethod;
-
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.webkit.WebView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.Expose;
 
 public class ServiceBean {
@@ -39,32 +28,24 @@ public class ServiceBean {
 	private String name;
 	@Expose(serialize = false, deserialize = false)
 	private Object bean;
+	@Expose(serialize = false, deserialize = false)
+	private ServiceBeanInvoker invoker;
 
-	public ServiceBean(String name, Object bean) {
+	public ServiceBean(String name, Object bean, ServiceBeanInvoker invoker) {
 		this.name = name;
 		this.bean = bean;
+		this.invoker = invoker;
 	}
 
 	public ServiceBeanDefinition getServiceBeanDefinition() {
 		return ServiceBeanDefinition.newInstance(name, bean);
 	}
 
-	private Method[] getBeanMethods(String methodName, int paramNum) {
-		List<Method> methods = new ArrayList<Method>();
-		@SuppressWarnings("rawtypes")
-		Class clazz = bean.getClass();
-		while(clazz != null) {
-			Method[] beanMethods = clazz.getDeclaredMethods();
-			for (Method method : beanMethods) {
-				if (method.isAnnotationPresent(ServiceMethod.class) && method.getName().equals(methodName)
-						&& method.getParameterTypes().length == paramNum)
-					methods.add(method);
-			}
-			clazz = clazz.getSuperclass();
-		}
-		return methods.toArray(new Method[] {});
+	public void invoke(WebView webView, String methodName, JsonElement jsonParams, String callback) throws ServiceBeanInvocationException{
+		invoker.call(bean, webView, methodName, jsonParams, callback);
 	}
 
+	/*
 	@SuppressWarnings("unchecked")
 	public void invoke(WebView webView, String methodName, JsonElement jsonParam, String callback) {
 		Gson gson = new Gson();
@@ -183,5 +164,22 @@ public class ServiceBean {
 
 		}
 	}
+
+	private Method[] getBeanMethods(String methodName, int paramNum) {
+		List<Method> methods = new ArrayList<Method>();
+		@SuppressWarnings("rawtypes")
+		Class clazz = bean.getClass();
+		while(clazz != null) {
+			Method[] beanMethods = clazz.getDeclaredMethods();
+			for (Method method : beanMethods) {
+				if (method.isAnnotationPresent(ServiceMethod.class) && method.getName().equals(methodName)
+						&& method.getParameterTypes().length == paramNum)
+					methods.add(method);
+			}
+			clazz = clazz.getSuperclass();
+		}
+		return methods.toArray(new Method[] {});
+	}
+	*/
 
 }

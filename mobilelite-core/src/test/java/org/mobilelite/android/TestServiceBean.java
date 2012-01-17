@@ -36,11 +36,13 @@ public class TestServiceBean {
 	JsonParser jsonParser;
 	JsonElement je;
 	ServiceBean serviceBean;
+	ServiceBeanInvoker invoker;
 	
 	@Before
 	public void setUp() {
 		jsonParser = new JsonParser();
-		serviceBean = new ServiceBean("bean", new UserService());
+		invoker = new DefaultServiceBeanInvoker();
+		serviceBean = new ServiceBean("bean", new UserService(), invoker);
 	}
 	
 	/*
