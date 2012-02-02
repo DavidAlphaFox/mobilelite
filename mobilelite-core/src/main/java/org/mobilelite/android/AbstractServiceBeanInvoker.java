@@ -49,7 +49,7 @@ public abstract class AbstractServiceBeanInvoker implements ServiceBeanInvoker {
 				if (serviceMethod.showDialog() || serviceMethod.execAsync()) {
 					executeMethodInDialog(target, method, params, serviceMethod, webView, callback);
 				} else {
-					executeMethod(target, method, params, webView, callback);
+					executeMethodAndCallback(target, method, params, webView, callback, serviceMethod);
 				}
 				break;
 			} catch (JsonParseException e) {
@@ -92,8 +92,7 @@ public abstract class AbstractServiceBeanInvoker implements ServiceBeanInvoker {
 			@Override
 			protected Object doInBackground(Object... arg0) {
 				try {
-					Object result = method.invoke(bean, params.toArray());
-					result = postInvoke(method, params, result);
+					Object result = executeMethod(bean, method, params, serviceMethod);
 				} catch (SecurityException e) {
 				} catch (JsonSyntaxException e) {
 				} catch (IllegalArgumentException e) {
@@ -134,11 +133,16 @@ public abstract class AbstractServiceBeanInvoker implements ServiceBeanInvoker {
 
 	}
 
-	protected void executeMethod(Object bean, Method method, List<Object> params, WebView webView, String callback) throws IllegalArgumentException,
+	protected void executeMethodAndCallback(Object bean, Method method, List<Object> params, WebView webView, String callback, ServiceMethod serviceMethod) throws IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
+		Object result = executeMethod(bean, method, params, serviceMethod);
+		doCallback(result, webView, callback);
+	}
+	
+	protected Object executeMethod(Object bean, Method method, List<Object> params, ServiceMethod serviceMethod) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Object result = method.invoke(bean, params.toArray());
 		result = postInvoke(method, params, result);
-		doCallback(result, webView, callback);
+		return result;
 	}
 
 	protected Object postInvoke(Method method, List<Object> params, Object result) {
