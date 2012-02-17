@@ -141,11 +141,11 @@ public abstract class AbstractServiceBeanInvoker implements ServiceBeanInvoker {
 	
 	protected Object executeMethod(Object bean, Method method, List<Object> params, ServiceMethod serviceMethod) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Object result = method.invoke(bean, params.toArray());
-		result = postInvoke(method, params, result);
+		result = postInvoke(method, params, serviceMethod, result);
 		return result;
 	}
 
-	protected Object postInvoke(Method method, List<Object> params, Object result) {
+	protected Object postInvoke(Method method, List<Object> params, ServiceMethod serviceMethod, Object result) {
 		return result;
 	}
 

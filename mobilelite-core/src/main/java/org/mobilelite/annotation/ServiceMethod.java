@@ -26,6 +26,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface ServiceMethod {
+	String cache() default "";
 	boolean showDialog() default false;
 	boolean execAsync() default false;
     String title() default "no title";
